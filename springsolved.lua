@@ -46,18 +46,18 @@ end
 
 function spring.update(self, t1)
 	--variables
-	local t0 = table.t
-	local p0 = table.p
-	local v0 = table.v
+	local t0 = self.t
+	local p0 = self.p
+	local v0 = self.v
 	
 	--constants
-	local b = table.b
-	local k = table.k
-	local d = table.d
+	local b = self.b
+	local k = self.k
+	local d = self.d
 	
 	--calculation
-	local dt     = t1 - t0
-	local p1, v1 = solved(p0, b, v0, k, d, dt)
+	local td = t1 - t0
+	local p1, v1 = solved(p0, b, v0, k, d, td)
 	
 	--output
 	self.t = t1

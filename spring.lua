@@ -4,10 +4,9 @@
 --localized
 local cos = math.cos
 local sin = math.sin
-local exp = math.exp
 
 --constants
-local e = exp(1)
+local E = 2.718281828459
 
 local function solved(p, b, v, k, d, t)
 	if k > 0 then
@@ -15,10 +14,10 @@ local function solved(p, b, v, k, d, t)
 			local h = (1 - d*d)^(1/2)
 			local si = sin(h*k*t)
 			local co = h*cos(h*k*t)
-			local ex = h*e^(d*k*t)
+			local ex = h*E^(d*k*t)
 			return b + (k*(p - b)*(co + d*si) + v*si)/(k*ex), (k*(b - p)*si + v*(co - d*si))/ex
 		else
-			local ex = e^(k*t)
+			local ex = E^(k*t)
 			return b + ((p - b)*(1 + k*t) + v*t)/ex, (v - (k*(p - b) + v)*k*t)/ex
 		end
 	else
@@ -26,43 +25,54 @@ local function solved(p, b, v, k, d, t)
 	end
 end
 
-local spring = {}
-
-function spring.new(table)
-	local self = {}
+local function new(prop)
+	local self    = {}
 	
 	--variables
-	self.t = table.t or 0--time
-	self.p = table.p or 0--position
-	self.v = table.v or 0--velocity
+	self.tick     = prop.tick     or tick()
+	self.position = prop.position or 0
+	self.velocity = prop.velocity or 0
 	
 	--constants
-	self.b = table.b or 0--target
-	self.k = table.k or 0--constant
-	self.d = table.d or 0--dampness
+	self.target   = prop.target   or 0
+	self.constant = prop.constant or 0
+	self.dampness = prop.dampness or 0
 	
 	return self
 end
 
-function spring.update(self, t1)
+local function update(self, tick1)
 	--variables
-	local t0 = self.t
-	local p0 = self.p
-	local v0 = self.v
+	local tick0     = self.tick
+	local position0 = self.position
+	local velocity0 = self.velocity
 	
 	--constants
-	local b = self.b
-	local k = self.k
-	local d = self.d
+	local target    = self.target
+	local constant  = self.constant
+	local dampness  = self.dampness
 	
 	--calculation
-	local td = t1 - t0
-	local p1, v1 = solved(p0, b, v0, k, d, td)
+	local tickd = tick1 - tick0
+	
+	--dewit
+	local position1, velocity1 = solved(
+		position0,
+		target,
+		velocity0,
+		constant,
+		dampness,
+		tickd
+	)
 	
 	--output
-	self.t = t1
-	self.p = p1
-	self.v = v1
+	self.tick     = tick1
+	self.position = position1
+	self.velocity = velocity1
 end
 
-return spring
+return {
+	solved = solved;
+	new    = new;
+	update = update;
+}

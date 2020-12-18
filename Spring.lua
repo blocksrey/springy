@@ -27,6 +27,7 @@ local function springSolved(p, b, v, k, d, t)
 end
 
 local Spring = {}
+Spring.__index = Spring
 
 --Create a new spring object
 function Spring.new(prop)

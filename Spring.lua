@@ -1,14 +1,15 @@
---spring module
---made by octonions and blocksrocks1234
+--Spring Module
+--Made by Octonions and BlocksRocks
 
---localized
+--Localized functions (speed)
 local cos = math.cos
 local sin = math.sin
 
---constants
+--Constants
 local E = 2.718281828459
 
-local function solved(p, b, v, k, d, t)
+--Solved spring function that returns position and velocity given initial conditions and time
+local function springSolved(p, b, v, k, d, t)
 	if k > 0 then
 		if d < 1 then
 			local h = (1 - d*d)^(1/2)
@@ -25,15 +26,18 @@ local function solved(p, b, v, k, d, t)
 	end
 end
 
-local function new(prop)
-	local self    = {}
+local Spring = {}
+
+--Create a new spring object
+function Spring.new(prop)
+	local self = setmetatable({}, Spring)
 	
-	--variables
-	self.tick     = prop.tick     or tick()
+	--Variables
+	self.time     = prop.time     or tick()
 	self.position = prop.position or 0
 	self.velocity = prop.velocity or 0
-	
-	--constants
+
+	--Constants
 	self.target   = prop.target   or 0
 	self.constant = prop.constant or 0
 	self.dampness = prop.dampness or 0
@@ -41,38 +45,35 @@ local function new(prop)
 	return self
 end
 
-local function update(self, tick1)
-	--variables
-	local tick0     = self.tick
+--Update the spring given a time input
+function Spring:Update(time1)
+	--Variables
+	local time0     = self.time
 	local position0 = self.position
 	local velocity0 = self.velocity
-	
-	--constants
+
+	--Constants
 	local target    = self.target
 	local constant  = self.constant
 	local dampness  = self.dampness
-	
-	--calculation
-	local tickd = tick1 - tick0
-	
-	--dewit
-	local position1, velocity1 = solved(
+
+	--Calculation
+	local timed = time1 - time0
+
+	--Dewit
+	local position1, velocity1 = springSolved(
 		position0,
 		target,
 		velocity0,
 		constant,
 		dampness,
-		tickd
+		timed
 	)
-	
-	--output
-	self.tick     = tick1
+
+	--Output
+	self.time     = time1
 	self.position = position1
 	self.velocity = velocity1
 end
 
-return {
-	solved = solved;
-	new    = new;
-	update = update;
-}
+return Spring

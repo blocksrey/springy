@@ -1,6 +1,8 @@
 # Springy (Analytical spring implementations)
 Framerate-independent springs for everyone!
 
+![](spring.gif)
+
 ## Example in Python
 ```py
 from spring import Spring
@@ -16,5 +18,3 @@ def on_update(delta_time):
 	
 	print(my_spring.p) # Output the position!
 ```
-
-![](spring.gif)

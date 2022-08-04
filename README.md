@@ -1,7 +1,7 @@
 # Springy (Analytical spring implementations)
 Framerate-independent springs for everyone!
 
-![](spring.gif)
+![](assets/spring.gif)
 
 ## Example in Python
 ```py

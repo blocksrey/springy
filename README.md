@@ -1,4 +1,4 @@
-# Springy (Analytical spring implementations)
+# Springy
 Framerate-independent springs for everyone!
 
 ![](assets/spring.gif)
